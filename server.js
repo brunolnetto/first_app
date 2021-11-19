@@ -7,6 +7,7 @@ const db = require('./db.js');
 const query_builder = require('./utils.js').query_builder;
 
 const app = express();
+const credentials = db.credentials;
 
 // [START enable_parser]
 // This middleware is available in Express v4.16.0 onwards
@@ -27,14 +28,14 @@ app.get('/submit', (req, res) => {
 app.post('/submit', async (req, res) => {
     try {
       var msg = {
-                  name_str: req.body.name,
-                  message: req.body.message,
+                  name_str: String(req.body.name),
+                  message: String(req.body.message),
                 };
 
-      var insert_str = 'insert into user_messages values ($1)';
-      var msg_str = JSON.stringify(msg);
+      var insert_str = 'insert into user_messages (name, message) values ($1, $2)';
+      var params_list = [msg.name_str, msg.message];
 
-      result = await query_builder(insert_str, [msg_str], 'Sucessful insertion');
+      result = await query_builder(insert_str, params_list, 'Sucessful insertion');
       var request_str = 'select * from user_messages';
       await query_builder(request_str, [], 'Sucessful request!');
 
