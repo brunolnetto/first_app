@@ -6,14 +6,15 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-var postgres_credentials =  {
-	'user': process.env.brunolnetto,
+const postgres_credentials =  {
+	'user': process.env.POSTGRES_USER,
 	'host': process.env.POSTGRES_HOST,
 	'database': process.env.POSTGRES_DB,
 	'password': process.env.POSTGRES_KEY,
-	'port': 5432
+	'port': process.env.POSTGRES_PORT
 }
 
 const client = new pg.Client(postgres_credentials); 
 
 module.exports = client;
+module.exports = postgres_credentials;
