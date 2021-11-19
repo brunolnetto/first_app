@@ -1,20 +1,17 @@
 'use strict';
 
 // [START app]
-const Router = require('express-promise-router');
+const express = require('express');
+const path = require('path');
+const db = require('./db.js');
+const query_builder = require('./utils.js').query_builder;
 
-const app_settings = require('./db.js')
-const db = app_settings.db;
+const app = express();
 
-async function query_builder(request_str, params_list, log_str){
-  return db.query(request_str)
-         .then(res => {
-          console.log(log_str);
-         })
-         .catch(e => console.error(e.stack))
-};
-
-const app = app_settings.app;
+// [START enable_parser]
+// This middleware is available in Express v4.16.0 onwards
+app.use(express.urlencoded({extended: true}));
+// [END enable_parser]
 
 app.get('/', (req, res) => {
   res.send('Hello from App Engine!');
@@ -27,19 +24,19 @@ app.get('/submit', (req, res) => {
 // [END add_display_form]
 
 // [START add_post_handler]
-app.post('/submit', (req, res) => {
+app.post('/submit', async (req, res) => {
     try {
       var msg = {
                   name_str: req.body.name,
                   message: req.body.message,
                 };
 
-      var msg_str = JSON.stringify(msg);
-      var request_str = 'select * from user_messages';
-      result = await query_builder(insert_query_str, [msg_str], 'Sucessful insertion');
-
       var insert_str = 'insert into user_messages values ($1)';
-      await query_builder(table_request_str, [], 'Sucessful request!');
+      var msg_str = JSON.stringify(msg);
+
+      result = await query_builder(insert_str, [msg_str], 'Sucessful insertion');
+      var request_str = 'select * from user_messages';
+      await query_builder(request_str, [], 'Sucessful request!');
 
       res.send('Sucessful!');
     }
@@ -48,5 +45,12 @@ app.post('/submit', (req, res) => {
     }
 });
 // [END add_post_handler]
+
+// Listen to the App Engine-specified port, or 8080 otherwise
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+  console.log(`Listening on port: ${PORT}`);
+});
 
 // [END app]
