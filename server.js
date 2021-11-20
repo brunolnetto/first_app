@@ -31,10 +31,12 @@ app.post('/submit', async (req, res) => {
                   name_str: String(req.body.name),
                   message: String(req.body.message),
                 };
-
+      console.log(msg);
+      /*
       var insert_str = 'insert into user_messages (name, message) values ($1, $2)';
       var params_list = [msg.name_str, msg.message];
       result = await query_builder(insert_str, params_list, 'Sucessful insertion');
+      */
 
       var request_str = 'select * from user_messages';
       result = await query_builder(request_str, [], 'Sucessful request!');
