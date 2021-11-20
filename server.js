@@ -37,7 +37,7 @@ app.post('/submit', async (req, res) => {
       
       var insert_str = 'insert into user_messages (name, message) values ($1, $2)';
       var params_list = [msg.name_str, msg.message];
-      await query_builder(insert_str, params_list, 'Sucessful insertion');
+      await query_builder(insert_str, params_list, 'Sucessful insertion');  
 
       var request_str = 'select * from user_messages';
       await query_builder(request_str, [], 'Sucessful request!');
