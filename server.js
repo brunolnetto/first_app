@@ -26,22 +26,21 @@ app.get('/submit', (req, res) => {
 
 // [START add_post_handler]
 app.post('/submit', async (req, res) => {
+    var msg = {
+                name_str: String(req.body.name),
+                message: String(req.body.message),
+              };
+
     try {
-      var msg = {
-                  name_str: String(req.body.name),
-                  message: String(req.body.message),
-                };
+      
       console.log(msg);
-      /*
+      
       var insert_str = 'insert into user_messages (name, message) values ($1, $2)';
       var params_list = [msg.name_str, msg.message];
-      result = await query_builder(insert_str, params_list, 'Sucessful insertion');
-      */
+      await query_builder(insert_str, params_list, 'Sucessful insertion');
 
       var request_str = 'select * from user_messages';
-      result = await query_builder(request_str, [], 'Sucessful request!');
-      console.log(result);
-      res.send(result);
+      await query_builder(request_str, [], 'Sucessful request!');
     }
     catch(e) {
       console.log(e.stack);
