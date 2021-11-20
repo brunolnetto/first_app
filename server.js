@@ -24,26 +24,31 @@ app.get('/submit', (req, res) => {
 });
 // [END add_display_form]
 
+async function test_db(msg) {
+    console.log(msg);
+        
+    var insert_str = 'insert into user_messages (name, message) values ($1, $2)';
+    var params_list = [msg.name_str, msg.message];
+    await query_builder(insert_str, params_list, 'Sucessful insertion');
+
+    var request_str = 'select * from user_messages';
+    await query_builder(request_str, [], 'Sucessful request!');
+}
+
 // [START add_post_handler]
 app.post('/submit', async (req, res) => {
     var msg = {
                 name_str: String(req.body.name),
                 message: String(req.body.message),
               };
-
+    
     try {
-      console.log(msg);
-      
-      var insert_str = 'insert into user_messages (name, message) values ($1, $2)';
-      var params_list = [msg.name_str, msg.message];
-      await query_builder(insert_str, params_list, 'Sucessful insertion');
-
-      var request_str = 'select * from user_messages';
-      await query_builder(request_str, [], 'Sucessful request!');
-    }
+        await test_db(msg);
+    }      
     catch(e) {
-      console.log(e.stack);
+        console.log(e.stack);
     }
+
 });
 // [END add_post_handler]
 
@@ -55,3 +60,4 @@ app.listen(PORT, () => {
 });
 
 // [END app]
+
