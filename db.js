@@ -15,6 +15,7 @@ const postgres_credentials =  {
 };
 
 const client = new Client(postgres_credentials);
+client.connect();
 
 module.exports = {
 		    client: client,
