@@ -20,7 +20,8 @@ app.get('/', (req, res) => {
 
 // [START add_display_form]
 app.get('/submit', (req, res) => {
-    res.sendFile(path.join(__dirname, '/views/form.html'));
+    var dir_name = path.join(__dirname, '/views/form.html');
+    res.sendFile(dir_name);
 });
 // [END add_display_form]
 
