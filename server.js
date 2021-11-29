@@ -21,45 +21,42 @@ app.get('/', (req, res) => {
 
 // [START add_display_form]
 app.get('/submit', (req, res) => {
-    res.sendFile(path.join(__dirname, '/views/form.html'));
+    var dir_name = path.join(__dirname, '/views/form.html');
+    res.sendFile(dir_name);
 });
 // [END add_display_form]
+
+async function test_db(msg) {
+    console.log(msg);
+    
+    console.log(msg);
+
+      var query_raw = 'SELECT * FROM user_messages;';
+      var params_list = [];
+      var query_msg = 'Sucessful select.';
+      
+      result = await query_builder(query_raw, params_list, query_msg);
+      
+        console.log(result);
+
+    /*
+      var insert_str = 'insert into user_messages (name, message) values ($1, $2)';
+      var params_list = [msg.name_str, msg.message];
+      await query_builder(insert_str, params_list, 'Sucessful insertion');
+
+      var request_str = 'select * from user_messages';
+      await query_builder(request_str, [], 'Sucessful request!');
+    */
+}
 
 // [START add_post_handler]
 app.post('/submit', async (req, res) => {
     var msg = {
                 name_str: String(req.body.name),
                 message: String(req.body.message),
-              };
-
-    try {
-        console.log(msg);
-
-        var query_raw = 'SELECT * FROM user_messages;';
-        var params_list = [];
-        var query_msg = 'Sucessful select.';
-        
-        result = await query_builder(query_raw, params_list, query_msg);
-        
-        console.log(result);
-
-        /*
-            var insert_str = 'insert into user_messages (id, name, message) values ($1, $2, $3)';
-            var params_list = [uuidv4(), msg.name_str, msg.message];
-            console.log(params_list);
-            result = await query_builder(insert_str, params_list, 'Sucessful insertion');
-
-            var request_str = 'select * from user_messages';
-            result = await query_builder(request_str, [], 'Sucessful request!');
-            console.log(result);
-            res.send(result);
-        */
-    }
-    catch(e) {
-      console.log(e.stack);
-    }
-
-    res.send(msg);
+              };    
+    try { await test_db(msg); }
+    catch(e) { console.log(e.stack); }
 });
 // [END add_post_handler]
 
@@ -71,3 +68,4 @@ app.listen(PORT, () => {
 });
 
 // [END app]
+
