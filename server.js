@@ -29,15 +29,12 @@ app.get('/submit', (req, res) => {
 async function test_db(msg) {
     console.log(msg);
     
-    console.log(msg);
-
-      var query_raw = 'SELECT * FROM user_messages;';
-      var params_list = [];
-      var query_msg = 'Sucessful select.';
-      
-      result = await query_builder(query_raw, params_list, query_msg);
-      
-        console.log(result);
+    var query_raw = 'SELECT * FROM user_messages;';
+    var params_list = [];
+    var query_msg = 'Sucessful select.';
+    
+    result = await query_builder(query_raw, params_list, query_msg);    
+    console.log(result);
 
     /*
       var insert_str = 'insert into user_messages (name, message) values ($1, $2)';
